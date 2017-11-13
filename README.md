@@ -2,7 +2,8 @@
 
 ## Juliana Zúñiga-A00068120
 
-# Comandos de linux necesarios para el aprovisionamiento de los servicios solicitados.
+Comandos de linux necesarios para el aprovisionamiento de un ambiente compuesto por los siguientes elementos: Un servidor encargado de almacenar logs por medio de la aplicación Elasticsearch, un servidor encargado de hacer la conversión de logs por medio de la aplicación Logstash, un servidor con la herramienta encargada de visualizar la información de los logs por medio de la aplicación Kibana y uno o varios servidores web ejecutando la aplicación FileBeat para el envío de los logs al servidor con Logstash
+
 
 ## Elastic Search
 
