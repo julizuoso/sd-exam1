@@ -6,11 +6,11 @@
 
 ## Elastic Search
 
-Servicio encargado de almacenar los logs enviados por los clientes. Los comandos necesarios para su instalación son los siguientes:
+Este es el servicio encargado de almacenar los logs enviados por los clientes. Los pasos necesarios para su instalación son los siguientes:
 
-Inicialmente se debe agregar el repositorio en el cual se encuentra ElasticSearch para centos:
+1. Agregar el repositorio en el cual se encuentra ElasticSearch para CentOS.
 
-Se agregan las siguientes líneas de código en la ruta `/etc/yum.repos.d/elasticsearch.repo`
+Para ello se agregan las siguientes líneas de código en la ruta `/etc/yum.repos.d/elasticsearch.repo`
 
 ```bash
 [elasticsearch]
@@ -21,7 +21,7 @@ gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
 enabled=1
 ```
 
-Después de haber agregado el repositorio necesarios se deben ejecutar las siguientes líneas:
+2. Ejecutar los siguientes comandos:
 
 ```bash
 yum install java
@@ -31,14 +31,14 @@ systemctl daemon-reload
 systemctl enable elasticsearch
 systemctl start elasticsearch
 ```
-Adicionalmente, es necesario abrir el puerto de escucha de elasticsearch mediante firewalld, para ello se deben ejecutar las siguientes lineas:
+3. Abrir el puerto de escucha de ElasticSearch mediante firewalld, para ello se deben ejecutar los siguientes comandos:
 
 ```
 systemctl start firewalld
 firewall-cmd --add-port=9200/tcp
 firewall-cmd --add-port=9200/tcp --permanent
 ```
-Para probar el buen funcionamiento de elasticsearch ingrese a ip-elasticsearch:9200 y deberíaa obtener como resultado lo siguiente:
+4. Para probar el buen funcionamiento de ElasticSearch, ingresar a [ip-elasticsearch]:9200 y debería obtener como resultado lo siguiente:
 
 ```
 {
@@ -58,9 +58,9 @@ Para probar el buen funcionamiento de elasticsearch ingrese a ip-elasticsearch:9
 
 ## LOGSTASH
 
-Servicio encargado de procesar los logs almacenados en el servidor de elasticsearch. Los comandos necesarios para su instalación son los siguientes:
+Este es el servicio encargado de procesar los logs almacenados en el servidor de ElasticSearch. Los pasos necesarios para su instalación son los siguientes:
 
-Inicialmente se debe agregar el repositorio en el cual se encuentra LogStash para centos:
+1. Agregar el repositorio en el cual se encuentra LogStash para CentOS.
 
 Se agregan las siguientes líneas de código en la ruta `/etc/yum.repos.d/logstash.repo`
 
@@ -72,18 +72,18 @@ gpgcheck=1
 gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
 enabled=1
 ```
-Después de haber agregado el repositorio necesarios se deben ejecutar las siguientes líneas:
+2. Ejectutar el siguiente comando:
 
 ```bash
 yum -y install logstash
 ```
-Una vez instalado se debe agregar la direccion ip en la cual esta corriendo logstash en la siguiente ruta: `/etc/pki/tls/openssl.cnf`
+3. Una vez instalado, se debe agregar la dirección ip en la cual esta corriendo LogStash en la siguiente ruta: `/etc/pki/tls/openssl.cnf`
 
 ```
 [ v3_ca ]
 subjectAltName = IP: 192.168.133.13
 ```
-Ahora procedemos a generar un certificado ssl con el objetivo de que los logs se transfieran de manera mucho más segura.
+4. Generar un certificado SSL con el objetivo de que los logs se transfieran de manera segura.
 
 ```bash
 
@@ -93,7 +93,7 @@ cd /etc/pki/tls
 
 ```
 
-Después creamos el archivo input.conf en la ruta  `/etc/logstash/conf.d/` con el siguiente contenido:
+5. Crear el archivo input.conf en la ruta  `/etc/logstash/conf.d/` con el siguiente contenido:
 
 ```
 input {
@@ -107,7 +107,7 @@ ssl_key => "/etc/pki/tls/private/logstash-forwarder.key"
 
 ```
 
-Ahora creamos el archivo output.conf en la ruta `/etc/logstash/conf.d/` con el siguiente contenido:
+6. Crear el archivo output.conf en la ruta `/etc/logstash/conf.d/` con el siguiente contenido:
 
 ```
 output {
@@ -122,7 +122,7 @@ document_type => "%{[@metadata][type]}"
 
 ```
 
-Una vez agregados los dos archivos anteriores, se debe crear el archivo filter.conf en la ruta `/etc/logstash/conf.d/` con el siguiente contenido:
+7. Una vez agregados los dos archivos anteriores, se debe crear el archivo filter.conf en la ruta `/etc/logstash/conf.d/` con el siguiente contenido:
 
 ```
 filter {
@@ -138,7 +138,7 @@ match => [ "timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
 
 ```
 
-Por último se verifica que la configuración esté correcta y se inicia el servicio usando los comandos:
+8. Verificar que la configuración esté correcta e iniciar el servicio usando los comandos:
 
 ```bash
 service logstash configtest
@@ -153,9 +153,9 @@ firewall-cmd --add-port=5044/tcp --permanent
 
 ## KIBANA
 
-Inicialmente se debe agregar el repositorio en el cual se encuentra Kibana para centos:
+1. Agregar el repositorio en el cual se encuentra Kibana para CentOS.
 
-Se agregan las siguientes líneas de código en la ruta `/etc/yum.repos.d/kibana.repo`
+Agregar las siguientes líneas de código en la ruta `/etc/yum.repos.d/kibana.repo`
 
 ```
 [kibana]
@@ -166,7 +166,7 @@ gpgkey=http://packages.elastic.co/GPG-KEY-elasticsearch
 enabled=1
 ```
 
-Después de haber agregado el repositorio necesarios se deben ejecutar las siguientes líneas:
+2. Ejecutar los siguientes comandos:
 
 ```bash
 yum install kibana
@@ -179,7 +179,7 @@ firewall-cmd --add-port=5601/tcp --permanent
 ```
 ## FileBeat
 
-Las líneas que se deben ejecutar para instalar nuestro cliente filebeat son las siguientes:
+Los comandos que se deben ejecutar para instalar el cliente FileBeat son los siguientes:
 
 ```bash
 yum install filebeat
@@ -282,6 +282,6 @@ end
 [1]: img/img1.png
 
 
-En la imagen anterior se puede apreciar los logs del servicio filebeat corriendo en el host terminator.
+En la imagen anterior se muestran los logs del servicio FileBeat corriendo en el host terminator.
 
-URL: https://github.com/EstebanMV96/sd-exam1.git
+URL: https://github.com/julizuoso/sd-exam1.git
